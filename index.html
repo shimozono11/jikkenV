@@ -38,9 +38,9 @@
    <script src="jquery-2.1.4.min.js"></script>
     <script src="jquery.japan-map.min.js"></script>
    <script type="text/javascript" >
-      const WIDTH_MAX = 70;
-      const WIDTH_MIDDLE = 50;
-      const WIDTH_MIN = 20;
+      const WIDTH_MAX = 1;
+      const WIDTH_MIDDLE = 0.7;
+      const WIDTH_MIN = 0.5;
       $(function(){
             $("#map").japanMap({
               color:"#84b0f6",
@@ -120,7 +120,9 @@
       ctx.fillText(data,0,0);
 
        ctx.beginPath();
-       ctx.moveTo(0, 5);
+      //ctx.moveTo(0, 0);
+       //左　制御（うえ）　右
+       ctx.bezierCurveTo(30*constriction, 5, 0, 240, -30*constriction, 5);
        //(幅、くびれ位置（下向き）、くびれ度合い、くびれ位置（上向き）、座標)
        /*
        ctx.bezierCurveTo(-1*constriction,20,0,60,0,150);
@@ -128,12 +130,11 @@
        */
        /* 三角形を描く */
       ctx.moveTo(0, 100);
-      ctx.lineTo(20*constriction*(1/70), 100);
+      ctx.lineTo(30*constriction, 100);
       ctx.lineTo(0, 150);
-      ctx.lineTo(-20*constriction*(1/70), 100);
+      ctx.lineTo(-30*constriction, 100);
       ctx.closePath();
-      /* 三角形を塗りつぶす */
-      ctx.fill();
+
        //ctx.closePath();
        ctx.fill();
      }
@@ -154,12 +155,23 @@
        ctx.fillText(data,0,-20);
 
        ctx.beginPath();
-       ctx.moveTo(0, -30);
+       //左　制御（うえ）　右
+       ctx.bezierCurveTo(30*constriction, -30, 0, -265, -30*constriction, -30);
+  //     ctx.moveTo(0, -30);
        //高さが+25(-25)
+       /*
        ctx.bezierCurveTo(-1*constriction,-45,0,-85,0,-150);
        ctx.bezierCurveTo(0,-85,constriction,-45,0,-30);
+        */
+        /* 三角形を描く */
+        ctx.moveTo(0, -125);
+        ctx.lineTo(30*constriction, -125);
+        ctx.lineTo(0, -175);
+        ctx.lineTo(-30*constriction, -125);
+        ctx.closePath();
 
-       ctx.fill();
+        //ctx.closePath();
+        ctx.fill();
       }
 
 

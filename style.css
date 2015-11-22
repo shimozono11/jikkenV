@@ -1,0 +1,24 @@
+
+
+#map{
+  position: absolute;
+  top: 340px; /*たて真ん中に置けないんで、、*/
+   left: 300px;  /*左端を中央に*/
+  z-index: 2;
+
+}
+#container{
+  position: absolute;
+  z-index: 1;
+}
+#form{
+  top: 340px; /*たて真ん中に置けないんで、、*/
+  left: 900px;
+  position: absolute;
+  z-index: 1;
+  background: #e8e3ce;
+  border: 1px #ccc solid;
+  box-shadow: 0 2px 3px 0 #ddd;
+  -moz-box-shadow: 0 2px 3px 0 #ddd;
+  -webkit-box-shadow: 0 2px 3px 0 #ddd;
+}

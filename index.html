@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>出入可視化</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body  background = "test.png">
+  <div id="form">
+    <span>Setting</span>
+    <br>
+    <span class="select">
+        年 :
+      <select name="year"><br>
+
+      <option value="y2010">2010</option>
+      <option value="y2011">2011</option>
+      <option value="y2012">2012</option>
+      <option value="y2013">2013</option>
+      <option value="y2014">2014</option>
+      <option value="y2015">2015</option>
+      </select>
+    </span>
+    <br>
+    <span class="radio">
+    <label><input type="radio" name="disp" value="inforeigner" />訪日</label>
+    <label><input type="radio" name="disp" value="outjapanese" />出国</label>
+    <label><input type="radio" name="disp" value="both_in_out" />両方</label>
+
+
+    </span>
+<br>
+	 </div>
+
+  <div id="container"></div>
+  <div id="map"></div>
+   <script type="text/javascript" src="immigration.js"> </script>
+   <script src="jquery-2.1.4.min.js"></script>
+    <script src="jquery.japan-map.min.js"></script>
+   <script type="text/javascript" >
+      const WIDTH_MAX = 70;
+      const WIDTH_MIDDLE = 50;
+      const WIDTH_MIN = 20;
+      $(function(){
+            $("#map").japanMap({
+              color:"#84b0f6",
+              width: 200,
+              drawsBoxLine : false,
+
+                onSelect : function(data){
+                    alert(data.name);
+                }
+            });
+      });
+       //canvas作成
+/*
+      var cvs2 = document.createElement("canvas");
+      cvs2.width = 800;
+      cvs2.height = 800;
+      document.getElementById("container").appendChild(cvs2);
+      var ctx2 = cvs2.getContext("2d");
+      var img = new Image();
+      img.src = "test.jpg";
+      ctx2.drawImage(img, 0, 0,300,300);
+*/
+      var cvs = document.createElement("canvas");
+      cvs.width = 800;
+      cvs.height = 800;
+      document.getElementById("container").appendChild(cvs);
+      var ctx = cvs.getContext("2d");
+
+      function getData(month_num,dataType){
+
+        for(var i = 0; i < dataImmigration.length;i++){
+          if(dataImmigration[i][0] == 2014 &&
+          dataImmigration[i][1] == month_num){
+            if(dataType == "outjapanese"){
+              return(dataImmigration[i][2]);
+            }
+            if(dataType == "inforeigner"){
+              return(dataImmigration[i][3]);
+            }
+          }
+        }
+
+      }
+
+      function getMaxData(dataType){
+        var max = 0;
+          for(j = 1; j <= 12; j++){
+              var data =  getData(j,dataType);
+              if(max < data){
+                max = data;
+              }
+          }
+          return(max);
+
+      }
+
+
+      var outjapaneseMaxData = getMaxData("outjapanese");
+      var inforeignerMaxData = getMaxData("inforeigner");
+
+      //訪日データの可視化
+    function inForeigner(month_num){
+      var data = getData(month_num,"inforeigner");
+      var effectData = data /inforeignerMaxData;
+      var constriction;
+      //12以上の変化
+      if(data >= 1200000){
+        ctx.fillStyle = "rgba(200,0,0,1.0)"
+        constriction = WIDTH_MAX;
+      }else if(data < 1200000 && data > 1100000){
+        ctx.fillStyle = "rgba(200,0,0,0.7)"
+        constriction = WIDTH_MIDDLE;
+      }else{
+        ctx.fillStyle = "rgba(200,0,0,0.3)"
+        constriction = WIDTH_MIN;
+      }
+      ctx.fillText(data,0,0);
+
+       ctx.beginPath();
+       ctx.moveTo(0, 5);
+       //(幅、くびれ位置（下向き）、くびれ度合い、くびれ位置（上向き）、座標)
+       /*
+       ctx.bezierCurveTo(-1*constriction,20,0,60,0,150);
+       ctx.bezierCurveTo(0,60,constriction,20,0,5);
+       */
+       /* 三角形を描く */
+      ctx.moveTo(0, 100);
+      ctx.lineTo(20*constriction*(1/70), 100);
+      ctx.lineTo(0, 150);
+      ctx.lineTo(-20*constriction*(1/70), 100);
+      ctx.closePath();
+      /* 三角形を塗りつぶす */
+      ctx.fill();
+       //ctx.closePath();
+       ctx.fill();
+     }
+     //出国データの可視化
+     function outJapanese(month_num){
+       var data = getData(month_num,"outjapanese");
+       //12以上の変化
+       if(data >= 1500000){
+         ctx.fillStyle = "rgba(0,200,0,1.0)"
+         constriction = WIDTH_MAX;
+       }else if(data < 1500000 && data > 1300000){
+         ctx.fillStyle = "rgba(0,200,0,0.7)"
+         constriction = WIDTH_MIDDLE;
+       }else{
+         ctx.fillStyle = "rgba(0,200,0,0.3)"
+         constriction = WIDTH_MIN;
+       }
+       ctx.fillText(data,0,-20);
+
+       ctx.beginPath();
+       ctx.moveTo(0, -30);
+       //高さが+25(-25)
+       ctx.bezierCurveTo(-1*constriction,-45,0,-85,0,-150);
+       ctx.bezierCurveTo(0,-85,constriction,-45,0,-30);
+
+       ctx.fill();
+      }
+
+
+      //1~12円作成
+      ctx.font = "bold 20pt sans-serif";
+      ctx.textAlign = "center";
+      ctx.translate(400, 400);
+      for (var i = 1; i <= 12; i++) {
+         var text = i;
+         ctx.rotate(Math.PI / 6);
+         ctx.save();
+         ctx.translate(0, -220);
+         ctx.fillText(text, 0, 0);
+         ctx.font = "bold 10pt sans-serif";
+         ctx.fillText("月", 30, 0);
+
+         inForeigner(i);
+         outJapanese(i);
+         ctx.restore();
+      }
+
+      </script>
+</body>
+</html>

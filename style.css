@@ -12,13 +12,133 @@
   z-index: 1;
 }
 #form{
-  top: 340px; /*たて真ん中に置けないんで、、*/
+  color: #555e64;
+
+  top: 250px; /*たて真ん中に置けないんで、、*/
   left: 900px;
+  padding : 20px ;
+  padding-top: 30px;
+  padding-bottom: 50px;
+
   position: absolute;
   z-index: 1;
   background: #e8e3ce;
   border: 1px #ccc solid;
-  box-shadow: 0 2px 3px 0 #ddd;
+  box-shadow: 0 2px 0 #555;
+  border-radius: 10px 10px 10px 10px;
   -moz-box-shadow: 0 2px 3px 0 #ddd;
   -webkit-box-shadow: 0 2px 3px 0 #ddd;
+}
+#form_title{
+  /*width: 2em;*/
+  text-align: center;
+  font-size: 1.2rem;
+  border-bottom: 0.05em solid #abb2b7;
+  margin-bottom: 1.5em;
+  padding-bottom: 0.2em;
+
+}
+#Y{
+  vertical-align:middle;
+  float: left;
+  margin-right: 0.2em;
+
+}
+.sample input{
+	display: none;
+}
+.sample label{
+	display: block;
+	float: left;
+	cursor: pointer;
+	width: 80px;
+	margin: 0;
+	padding: 12px 5px;
+	border-right: 1px solid #abb2b7;
+	background: #bdc3c7;
+	color: #555e64;
+	font-size: 14px;
+	text-align: center;
+	line-height: 1;
+	transition: .2s;
+  box-shadow: 0 2px 0 #AAA;
+
+}
+.sample label:first-of-type{
+	border-radius: 3px 0 0 3px;
+
+}
+.sample label:last-of-type{
+	border-right: 0px;
+	border-radius: 0 3px 3px 0;
+}
+.sample input[type="radio"]:checked + label {
+	background-color: #a1b91d;
+	color: #fff;
+}
+
+
+@import url(http://fonts.googleapis.com/css?family=Medula+One);
+
+
+select {
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -o-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  border: 0;
+  margin: 0;
+  padding-bottom: 0.2em;
+  background: none transparent;
+  vertical-align: middle;
+  font-size: inherit;
+  color: inherit;
+  box-sizing: content-box;
+}
+
+div {
+  margin-bottom: 1em;
+}
+
+.custom {
+  width: 80px;
+
+  overflow: hidden;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  position: relative;
+  border-radius: 0.2em;
+  /*border: 1px solid rgba(255, 255, 255, 0.5);*/
+  box-shadow: 0 2px 0 #AAA;
+  background-color: #bdc3c7;
+  color: #555e64;
+}
+.custom > select {
+  width: 130%;
+  /*padding: 0.6em 2.4em 0.6em 0.6em;*/
+  font-size: 1rem;
+}
+.custom:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1.8em;
+  display: block;
+  content: "";
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") center no-repeat;
+  pointer-events: none;
+}
+.default .custom > select {
+  width: auto;
+}
+.overflow .custom {
+  overflow: visible;
+}
+.overflow .custom select {
+  outline: 2px dotted rgba(255, 255, 0, 0.5);
 }

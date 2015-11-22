@@ -73,8 +73,10 @@
 	border-radius: 0 3px 3px 0;
 }
 .sample input[type="radio"]:checked + label {
-	background-color: #a1b91d;
+	background-color: #7f8c8d;
 	color: #fff;
+  box-shadow: 0 2px 0 #AAA;
+
 }
 
 
@@ -114,13 +116,15 @@ div {
   border-radius: 0.2em;
   /*border: 1px solid rgba(255, 255, 255, 0.5);*/
   box-shadow: 0 2px 0 #AAA;
-  background-color: #bdc3c7;
-  color: #555e64;
+  background-color: #7f8c8d;
+  color: #fff;
+
 }
 .custom > select {
   width: 130%;
   /*padding: 0.6em 2.4em 0.6em 0.6em;*/
   font-size: 1rem;
+
 }
 .custom:after {
   position: absolute;
@@ -135,6 +139,7 @@ div {
 }
 .default .custom > select {
   width: auto;
+
 }
 .overflow .custom {
   overflow: visible;

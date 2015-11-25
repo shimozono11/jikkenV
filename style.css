@@ -3,7 +3,7 @@
 #map{
   position: absolute;
   top: 340px; /*たて真ん中に置けないんで、、*/
-   left: 300px;  /*左端を中央に*/
+   left: 280px;  /*左端を中央に*/
   z-index: 2;
 
 }
@@ -11,7 +11,7 @@
   position: absolute;
   z-index: 1;
 }
-#form{
+form{
   color: #555e64;
 
   top: 250px; /*たて真ん中に置けないんで、、*/
@@ -44,10 +44,10 @@
   margin-right: 0.2em;
 
 }
-.sample input{
+#radio input{
 	display: none;
 }
-.sample label{
+#radio label{
 	display: block;
 	float: left;
 	cursor: pointer;
@@ -64,15 +64,15 @@
   box-shadow: 0 2px 0 #AAA;
 
 }
-.sample label:first-of-type{
+#radio label:first-of-type{
 	border-radius: 3px 0 0 3px;
 
 }
-.sample label:last-of-type{
+#radio label:last-of-type{
 	border-right: 0px;
 	border-radius: 0 3px 3px 0;
 }
-.sample input[type="radio"]:checked + label {
+#radio input[type="radio"]:checked + label {
 	background-color: #7f8c8d;
 	color: #fff;
   box-shadow: 0 2px 0 #AAA;

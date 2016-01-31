@@ -80,8 +80,35 @@
               }
           }
           return(max);
-
       }
+      // function getDiffMaxLabel(){
+      //   var max = 0;
+      //   var label = 0;
+      //     for(j = 1; j <= 12; j++){
+      //         var data =  getData(j,"outjapanese") - getData(j,"inforeigner");
+      //         if(0 > data) data *= -1;
+      //         if(max < data){
+      //           max = data;
+      //           label = j;
+      //         }
+      //     }
+      //     return(label);
+      // }
+      // function getDiffMinLabel(){
+      //   var min = 5000000;
+      //   var label = 0;
+      //     for(j = 1; j <= 12; j++){
+      //         var data =  getData(j,"outjapanese") - getData(j,"inforeigner");
+      //         if(0 > data) data *= -1;
+      //         if(min > data){
+      //           min = data;
+      //           label = j;
+      //         }
+      //     }
+      //     return(label);
+      // }
+      //
+      // alert(getDiffMinLabel());
 
       var outjapaneseMaxData = getMaxData("outjapanese");
       var inforeignerMaxData = getMaxData("inforeigner");

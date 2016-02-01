@@ -4,7 +4,7 @@
   position: absolute;
   top: 340px; /*たて真ん中に置けないんで、、*/
    left: 280px;  /*左端を中央に*/
-  z-index: 2;
+  z-index: 0;
 
 }
 #container{

@@ -39,6 +39,7 @@
    <script src="jquery-2.1.4.min.js"></script>
    <script src="jquery.japan-map.min.js"></script>
    <script type="text/javascript" >
+
    //前準備
    const WIDTH_MAX = 1;
    const WIDTH_MIDDLE = 0.7;
@@ -54,6 +55,7 @@
    ctx.textAlign = "center";
    ctx.translate(400, 400);
    ctx.save();
+
 
       function getData(month_num,dataType){
 
@@ -111,40 +113,37 @@
       // alert(getDiffMinLabel());
       function Ball(){
         var me = this;
-        this.r = 20.0;
+        this.r = 10.0;
         this.x = 0;
         this.y = 0;
 
         this.draw = function(ctx){
           ctx.beginPath();
           // ctx.fillStyle = 'rgba(255, 0, 0,'+ me.r %20.0/20.0 +')';
-          ctx.arc(me.x, me.y, me.r, 0, 180 * Math.PI / 180, false);
-          // ctx.arc(me.x, me.y, me.r, 0, 2 * Math.PI, false);
+          // ctx.arc(me.x, me.y, me.r, 0, 180 * Math.PI / 180, false);
+          ctx.arc(me.x, me.y, me.r, 0, 2 * Math.PI, false);
           ctx.fillStyle = 'red';
           ctx.fill();
         }
       }
-      var ball1 = new Ball();
-      var flag = 1;
-      var max_volume = 30;
-      function render(){
-        for (var i = 1; i <= 12; i++) {
-           ctx.rotate(Math.PI / 6);
-           ctx.save();
-           ctx.translate(0, -50);
 
-           if(i == 2){
-             ctx.clearRect(-1*max_volume,-1*max_volume,max_volume*2,max_volume*2);
-             if(flag == 1){
-               ball1.r += 0.1;
-               if(ball1.r > max_volume)  flag = 0;
-             }
-             if(flag == 0){
-               ball1.r -= 0.1;
-               if(ball1.r < 20.0)  flag = 1;
-             }
-             ball1.draw(ctx);
-           }
+
+      //ボールのアニメ
+      var max_volume = 30;
+      var ballnum = 3;
+      function render(){
+        for (var i = 0; i <= ballnum; i++) {
+          var ball = new Ball;
+          var randX = Math.floor( Math.random() * 50 ) ;
+          var randY = Math.floor( Math.random() * 40 ) ;
+          if(randX % 2 == 1){
+            randX *= -1;
+          }if(randY % 2 == 1){
+            randY *= -1;
+          }
+           ctx.save();
+           ctx.translate(randY, -1*randX);
+          ball.draw(ctx);
            ctx.restore();
          }
 
@@ -271,6 +270,7 @@
                 }
             });
       });
+
 
 
       //メイン

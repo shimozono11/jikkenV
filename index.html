@@ -111,42 +111,42 @@
       // alert(getDiffMinLabel());
       function Ball(){
         var me = this;
-        this.r = 10.0;
+        this.r = 20.0;
         this.x = 0;
         this.y = 0;
 
         this.draw = function(ctx){
           ctx.beginPath();
-          ctx.arc(me.x, me.y, me.r, 0, 2 * Math.PI, false);
+          // ctx.fillStyle = 'rgba(255, 0, 0,'+ me.r %20.0/20.0 +')';
+          ctx.arc(me.x, me.y, me.r, 0, 180 * Math.PI / 180, false);
+          // ctx.arc(me.x, me.y, me.r, 0, 2 * Math.PI, false);
           ctx.fillStyle = 'red';
           ctx.fill();
         }
       }
       var ball1 = new Ball();
       var flag = 1;
+      var max_volume = 30;
       function render(){
-        ctx.clearRect(-20,-20,40,40);
-        // alert("da");
-        if(flag == 1){
-          // alert("da");
-          ball1.r += 0.1;
+        for (var i = 1; i <= 12; i++) {
+           ctx.rotate(Math.PI / 6);
+           ctx.save();
+           ctx.translate(0, -50);
 
-          if(ball1.r > 20.0){
-            flag = 0;
-
-
-          }
-        }
-        if(flag == 0){
-          //  alert("da");
-          ball1.r -= 0.1;
-          if(ball1.r < 10.0) {
-            flag = 1;
-            // alert("da");
-          }
-        }
-
-        ball1.draw(ctx);
+           if(i == 2){
+             ctx.clearRect(-1*max_volume,-1*max_volume,max_volume*2,max_volume*2);
+             if(flag == 1){
+               ball1.r += 0.1;
+               if(ball1.r > max_volume)  flag = 0;
+             }
+             if(flag == 0){
+               ball1.r -= 0.1;
+               if(ball1.r < 20.0)  flag = 1;
+             }
+             ball1.draw(ctx);
+           }
+           ctx.restore();
+         }
 
       }
 
@@ -188,7 +188,7 @@
       ctx.closePath();
 
        ctx.fill();
-       setInterval(render,30);
+
 
      }
 
@@ -253,6 +253,7 @@
 
          ctx.restore();
        }
+       setInterval(render,30);
       }
 
 

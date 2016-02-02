@@ -130,24 +130,24 @@
 
 
 
-      var ballnum = 3;
+      var ballnum = 5;
       var x = new Array(ballnum);
-
       var y = new Array(ballnum);
       var flag = 0;
       //ボールのアニメ
       function render(){
+
         for (var i = 0; i < ballnum; i++) {
-          if(flag < 4){
+          //前のボールの削除
+          if(flag < ballnum + 1){
             flag += 1;
-          }else if(flag == 4){
+          }else if(flag == ballnum + 1){
             ctx.save();
             ctx.translate(x[i],y[i]);
-            alert("はいったよん");
-            alert(x[i]);
             ctx.clearRect(-1*r,-1*r,r*2,r*2);
             ctx.restore();
           }
+          //ボール新規作成してランダムに表示
           var ball = new Ball;
           var randX = Math.floor( Math.random() * 40 ) ;
           var randY = Math.floor( Math.random() * 50 ) ;
@@ -159,12 +159,65 @@
           x[i] = randX;
           y[i] = randY;
           ctx.save();
-          alert(i+"回目");
-          alert(randX);
           ctx.translate(randX, randY);
-          ball.draw(ctx);
+          ball.draw(ctx,i+1);
           ctx.restore();
          }
+
+      }
+
+      var month_pos = [[515,205], [600,290],[630,400], [600,520],[515,600], [400,630]
+    ,[285,600], [200,520],[170,400], [200,290],[290,205], [400,175]];
+
+
+    var bigCofficient = 0;
+      function Month() {
+         var me = this;
+
+         this.x = 0;
+         this.y = 0;
+         this.num = 0;
+         this.isC=false;
+         this.block = 0;
+        //  this.isDragged = false;
+
+         this.draw = function(ctx,i) {
+
+             ctx.beginPath();
+             ctx.fillStyle = "black";
+             ctx.fillText(i, 0, 0);
+             ctx.font = "bold 10pt sans-serif";
+             ctx.fillText("月", 30, 0);
+             ctx.fill();
+             me.num = i;
+
+         };
+
+         window.addEventListener("mousedown", function(e) {
+           var dx = month_pos[me.num-1][0] - e.layerX;
+           var dy = month_pos[me.num-1][1] - e.layerY;
+           me.isC = Math.sqrt(dx * dx + dy * dy) < 20;
+           if (me.isC==true && me.block == 0) {
+            //  alert(month_pos[me.num-1]);
+             clearInterval(render);
+             ctx.clearRect(-400, -400, cvs.width*2, cvs.height*2);
+             if(me.num >= 1 && me.num <=3){
+               bigCofficient = 1;
+             }else if(me.num >= 4 && me.num <=6){
+               bigCofficient = 4;
+             }else if(me.num >= 7 && me.num <=9){
+               bigCofficient = 7;
+             }else if(me.num >= 10 && me.num <=12){
+               bigCofficient = 10;
+              //  alert("checj");
+             }
+             drawVis(1);
+           }
+           me.block = 1;
+         });
+         window.addEventListener("mouseup", function() {
+             me.isC = false;
+         });
 
       }
 
@@ -187,6 +240,39 @@
       }else{
         ctx.fillStyle = "rgba(00,70,0,0.5)";
         constriction = WIDTH_MIN;
+      }
+      switch(bigCofficient){
+        case 1:
+        // alert("f");
+        if(month_num >= 1 && month_num <=3){
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#000000";
+          ctx.shadowOffsetX = 10;
+        }
+        break;
+        case 4:
+        if(month_num >= 4 && month_num <=6){
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#000000";
+          ctx.shadowOffsetX = 10;
+        }
+        break;
+        case 7:
+        if(month_num >= 7 && month_num <=9){
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#000000";
+          ctx.shadowOffsetX = 10;
+        }
+        break;
+        case 10:
+        if(month_num >= 10 && month_num <=12){
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#000000";
+          ctx.shadowOffsetX = 10;
+        }
+        break;
+        default:
+        break;
       }
 
        ctx.beginPath();
@@ -248,13 +334,12 @@
       function drawVis(vis){
       //1~12円作成
       for (var i = 1; i <= 12; i++) {
-         var text = i;
+
          ctx.rotate(Math.PI / 6);
          ctx.save();
          ctx.translate(0, -220);
-         ctx.fillText(text, 0, 0);
-         ctx.font = "bold 10pt sans-serif";
-         ctx.fillText("月", 30, 0);
+         var month = new Month();
+         month.draw(ctx,i);
 
          if(vis == "1"){
            inForeigner(i);
@@ -271,7 +356,8 @@
 
          ctx.restore();
        }
-       setInterval(render,30);
+      //  alert("set");
+         setInterval(render,30);
       }
 
 
@@ -294,10 +380,10 @@
 
       //メイン
       var radio = document.getElementsByName("RadioGroup");
+
       for (var i = 0; i < radio.length; i++) {
        radio[i].addEventListener("change", function() {
          ctx.clearRect(-400, -400, cvs.width*2, cvs.height*2);
-        //  clearInterval(render);
          drawVis(this.value);
         });
       }

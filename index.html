@@ -123,7 +123,7 @@
           // ctx.fillStyle = 'rgba(255, 0, 0,'+ me.r %20.0/20.0 +')';
           // ctx.arc(me.x, me.y, me.r, 0, 180 * Math.PI / 180, false);
           ctx.arc(me.x, me.y, me.r, 0, 2 * Math.PI, false);
-          ctx.fillStyle = 'red';
+          ctx.fillStyle = 'purple';
           ctx.fill();
         }
       }
@@ -133,7 +133,26 @@
       var ballnum = 5;
       var x = new Array(ballnum);
       var y = new Array(ballnum);
+      var interval_time = 130;
       var flag = 0;
+      function setIntensity(cofficient){
+        switch(cofficient){
+          case 1:
+          interval_time = 1000;
+          break;
+          case 4:
+          interval_time = 500;
+          break;
+          case 7:
+          interval_time = 100;
+          break;
+          case 10:
+          interval_time = 100;
+          break;
+          default:
+          break;
+        }
+      }
       //ボールのアニメ
       function render(){
 
@@ -149,12 +168,17 @@
           }
           //ボール新規作成してランダムに表示
           var ball = new Ball;
-          var randX = Math.floor( Math.random() * 40 ) ;
-          var randY = Math.floor( Math.random() * 50 ) ;
+          var randX = Math.floor( Math.random() * 50 ) ;
+          var randY = Math.floor( Math.random() * 55 ) ;
           if(randX % 2 == 1){
             randX *= -1;
           }if(randY % 2 == 1){
             randY *= -1;
+          }
+          if(randX > 1 && randY >1){
+            randY *=-1;
+          }if(randX < 1 && randY < 1){
+            randY *=-1;
           }
           x[i] = randX;
           y[i] = randY;
@@ -163,6 +187,7 @@
           ball.draw(ctx,i+1);
           ctx.restore();
          }
+        //  for(var i = 0; i <interval_time;i++){}
 
       }
 
@@ -196,23 +221,29 @@
          window.addEventListener("mousedown", function(e) {
            var dx = month_pos[me.num-1][0] - e.layerX;
            var dy = month_pos[me.num-1][1] - e.layerY;
-           me.isC = Math.sqrt(dx * dx + dy * dy) < 20;
+           me.isC = Math.sqrt(dx * dx + dy * dy) < 30;
            if (me.isC==true && me.block == 0) {
             //  alert(month_pos[me.num-1]);
-             clearInterval(render);
-             ctx.clearRect(-400, -400, cvs.width*2, cvs.height*2);
+            //  clearInterval(render);
+
              if(me.num >= 1 && me.num <=3){
                bigCofficient = 1;
+
              }else if(me.num >= 4 && me.num <=6){
                bigCofficient = 4;
              }else if(me.num >= 7 && me.num <=9){
                bigCofficient = 7;
              }else if(me.num >= 10 && me.num <=12){
                bigCofficient = 10;
-              //  alert("checj");
+
              }
-             drawVis(1);
+             setIntensity(bigCofficient);
+            ctx.clearRect(-400, -400, cvs.width*2, cvs.height*2);
+             drawVis("1",true);
+            //  //入ったやつだけブロック、他のやつは0のまま
+            //  me.block = 1;
            }
+           //全部ブロックして、新しいものが生成されない
            me.block = 1;
          });
          window.addEventListener("mouseup", function() {
@@ -243,7 +274,7 @@
       }
       switch(bigCofficient){
         case 1:
-        // alert("f");
+
         if(month_num >= 1 && month_num <=3){
           ctx.shadowBlur = 10;
           ctx.shadowColor = "#000000";
@@ -330,8 +361,8 @@
 
         ctx.fill();
       }
-
-      function drawVis(vis){
+var arrChangeCnt = new Array();
+      function drawVis(vis,mode){
       //1~12円作成
       for (var i = 1; i <= 12; i++) {
 
@@ -356,15 +387,23 @@
 
          ctx.restore();
        }
-      //  alert("set");
-         setInterval(render,30);
+       if(mode==true) {
+        //  alert(2);
+
+         if (arrChangeCnt.length > 0) {
+           clearInterval(arrChangeCnt.shift());
+         }
+         arrChangeCnt.push(inter = setInterval(render, interval_time));
+       }
       }
+
+
 
 
       //初期画面
 
       $("input[name='RadioGroup']").val(["2"]);
-      drawVis("2");
+      drawVis("2",false);
       $(function(){
             $("#map").japanMap({
               color:"#84b0f6",
@@ -384,7 +423,10 @@
       for (var i = 0; i < radio.length; i++) {
        radio[i].addEventListener("change", function() {
          ctx.clearRect(-400, -400, cvs.width*2, cvs.height*2);
-         drawVis(this.value);
+         if (arrChangeCnt.length > 0) {
+           clearInterval(arrChangeCnt.shift());
+         }
+         drawVis(this.value,false);
         });
       }
 

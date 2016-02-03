@@ -114,7 +114,7 @@
       var r = 10;
       function Ball(){
         var me = this;
-        this.r = r;
+        this.r = r-1;
         this.x = 0;
         this.y = 0;
 
@@ -130,23 +130,25 @@
 
 
 
-      var ballnum = 5;
+      var ballnum = 3;
       var x = new Array(ballnum);
       var y = new Array(ballnum);
       var interval_time = 130;
       var flag = 0;
       function setIntensity(cofficient){
+        //今だけ
+        // var max = dataConsume[3];
         switch(cofficient){
-          case 1:
-          interval_time = 1000;
-          break;
-          case 4:
+          case 0:
           interval_time = 500;
           break;
-          case 7:
+          case 1:
+          interval_time = 300;
+          break;
+          case 2:
           interval_time = 100;
           break;
-          case 10:
+          case 3:
           interval_time = 100;
           break;
           default:
@@ -157,10 +159,11 @@
       function render(){
 
         for (var i = 0; i < ballnum; i++) {
+
           //前のボールの削除
-          if(flag < ballnum + 1){
+          if(flag < ballnum){
             flag += 1;
-          }else if(flag == ballnum + 1){
+          }else if(flag == ballnum){
             ctx.save();
             ctx.translate(x[i],y[i]);
             ctx.clearRect(-1*r,-1*r,r*2,r*2);
@@ -168,23 +171,39 @@
           }
           //ボール新規作成してランダムに表示
           var ball = new Ball;
-          var randX = Math.floor( Math.random() * 50 ) ;
-          var randY = Math.floor( Math.random() * 55 ) ;
-          if(randX % 2 == 1){
-            randX *= -1;
-          }if(randY % 2 == 1){
-            randY *= -1;
+          var poscheck = true;
+          while(poscheck){
+            var randX = Math.floor( Math.random() * 50 ) ;
+            var randY = Math.floor( Math.random() * 55 ) ;
+            if(randX % 2 == 1){
+              randX *= -1;
+            }if(randY % 2 == 1){
+              randY *= -1;
+            }
+            if(randX > 1 && randY >1){
+              randY *=-1;
+            }if(randX < 1 && randY < 1){
+              randY *=-1;
+            }
+
+            if(i == 0 && !((x[i+1] + r)>=randX && (x[i+1] - r)<=randX) && !((x[i+2] + r)>=randX && (x[i+2] - r)<=randX)){
+
+              poscheck = false;
+            }else if(i == 1 && !((x[i-1] + r)>=randX && (x[i-1] - r)<=randX) && !((x[i+1] + r)>=randX && (x[i+1] - r)<=randX)){
+
+              poscheck = false;
+            }else if(i == 2 && !((x[i-1] + r)>=randX && (x[i-1] - r)<=randX) && !((x[i-2] + r)>=randX && (x[i-2] - r)<=randX)){
+
+              poscheck = false;
+            }
           }
-          if(randX > 1 && randY >1){
-            randY *=-1;
-          }if(randX < 1 && randY < 1){
-            randY *=-1;
-          }
+
+
           x[i] = randX;
           y[i] = randY;
           ctx.save();
           ctx.translate(randX, randY);
-          ball.draw(ctx,i+1);
+          ball.draw(ctx);
           ctx.restore();
          }
         //  for(var i = 0; i <interval_time;i++){}
@@ -222,22 +241,26 @@
            var dx = month_pos[me.num-1][0] - e.layerX;
            var dy = month_pos[me.num-1][1] - e.layerY;
            me.isC = Math.sqrt(dx * dx + dy * dy) < 30;
+           var cofficient;
            if (me.isC==true && me.block == 0) {
             //  alert(month_pos[me.num-1]);
             //  clearInterval(render);
 
              if(me.num >= 1 && me.num <=3){
                bigCofficient = 1;
+               cofficient = 0;
 
              }else if(me.num >= 4 && me.num <=6){
                bigCofficient = 4;
+               cofficient = 1;
              }else if(me.num >= 7 && me.num <=9){
                bigCofficient = 7;
+               cofficient = 2;
              }else if(me.num >= 10 && me.num <=12){
                bigCofficient = 10;
-
+               cofficient = 3;
              }
-             setIntensity(bigCofficient);
+             setIntensity(cofficient);
             ctx.clearRect(-400, -400, cvs.width*2, cvs.height*2);
              drawVis("1",true);
             //  //入ったやつだけブロック、他のやつは0のまま
@@ -426,6 +449,7 @@ var arrChangeCnt = new Array();
          if (arrChangeCnt.length > 0) {
            clearInterval(arrChangeCnt.shift());
          }
+         bigCofficient = 0;
          drawVis(this.value,false);
         });
       }
